@@ -1,5 +1,6 @@
 import requests
 from flask import Flask, redirect, request, url_for
+from fetch_linkedin_data import fetch_linkedin_profile
 
 app = Flask(__name__)
 
@@ -34,7 +35,12 @@ def callback():
     if not access_token:
         return 'Error: No access token obtained'
 
-    return f'Access Token: {access_token}'
+    # Fetch LinkedIn profile data using the access token
+    profile_data = fetch_linkedin_profile(access_token)
+    if profile_data:
+        return f'LinkedIn Profile Data: {profile_data}'
+    else:
+        return 'Error: Failed to fetch LinkedIn profile data.'
 
 if __name__ == '__main__':
     app.run(debug=True)
